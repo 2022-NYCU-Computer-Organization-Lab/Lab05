@@ -10,5 +10,27 @@ module ForwardingUnit (
     output reg [2-1:0] ForwardB
 );
 /* Write your code HERE */
-endmodule
+always @(*) begin
+    if (EXEMEM_RegWrite != 1'b0 && EXEMEM_RD != 5'b00000 && EXEMEM_RD == IDEXE_RS1) begin
+        ForwardA <= 2'b10;
+    end
+    else if (MEMWB_RegWrite != 1'b0 && MEMWB_RD != 5'b00000 && MEMWB_RD == IDEXE_RS1) begin
+        ForwardA <= 2'b01;
+    end
+    else begin
+        ForwardA <= 2'b00;
+    end
+end
 
+always @(*) begin
+    if (EXEMEM_RegWrite != 1'b0 && EXEMEM_RD != 5'b00000 && EXEMEM_RD == IDEXE_RS2) begin
+        ForwardB <= 2'b10;
+    end
+    else if (MEMWB_RegWrite != 1'b0 && MEMWB_RD != 5'b00000 && MEMWB_RD == IDEXE_RS2) begin
+        ForwardB <= 2'b01;
+    end
+    else begin
+        ForwardB <= 2'b00;
+    end
+end
+endmodule
