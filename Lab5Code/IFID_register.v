@@ -13,10 +13,15 @@ module IFID_register (
 /* Write your code HERE */
 // 感覺 flush 對 IFID_register 內部沒什麼關西啊，主要是外面的 control 要全 0
 
-always @(*) begin
-    address_o   = address_i;
-    instr_o     = instr_i;
-    pc_add4_o   = pc_add4_i;
+always @(posedge clk_i) begin
+    if(~rst_i)
+        address_o   <= 0;
+        instr_o     <= 0;
+        pc_add4_o   <= 0;
+    else
+        address_o   <= address_i;
+        instr_o     <= instr_i;
+        pc_add4_o   <= pc_add4_i;
 end
 
 endmodule
