@@ -8,6 +8,10 @@ module Pipeline_CPU(
 input         clk_i;
 input         rst_i;
 
+// Again, these are the signals TAs forgot to gave us
+wire [32-1:0] Imm_4 = 4;
+wire [32-1:0] instr;
+
 //Internal Signals
 wire [31:0] PC_i;
 wire [31:0] PC_o;
@@ -40,7 +44,6 @@ wire MemtoReg, MemRead, MemWrite;
 wire [1:0] ForwardA;
 wire [1:0] ForwardB;
 wire [31:0] PC_Add4;
-
 
 //Pipeline Register Signals
 //IFID
@@ -84,15 +87,28 @@ wire [31:0] MEMWB_PC_Add4_o;
 
 // IF
 MUX_2to1 MUX_PCSrc(
+    .data0_i(PC_Add4),
+    .data1_i(),
+    .select_i(MUXPCSrc),
+    .data_o(pc_i)
 );
 
 ProgramCounter PC(
+    .clk_i(clk_i),
+    .rst_i(rst_i),
+    .pc_i(pc_i),
+    .pc_o(pc_o)
 );
 
 Adder PC_plus_4_Adder(
+    .src1_i(pc_o),
+    .src2_i(Imm_4),
+    .sum_o(PC_Add4)
 );
 
 Instr_Memory IM(
+    .addr_i(pc_o),
+    instr_o(instr)
 );
 
 IFID_register IFtoID(
@@ -157,6 +173,3 @@ MUX_3to1 MUX_MemtoReg(
 );
 
 endmodule
-
-
-
