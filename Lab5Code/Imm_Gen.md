@@ -3,7 +3,7 @@
 | Instruction | type |Ins[6:0] opcode - Ins[14:12] func3 | imm12
 | -------- | -------- | -------- | -------- |
 |  | R-type |  | N/A |
-| Addi |  I-type |0010011 | ins[31:20] |
+| Addi |  I-type |0010011 - 000 | ins[31:20] |
 | Load (LW) | I-type | 0000011 | ins[31:20] |
 | Slti | I-type | 0010011 - 010 | ins[31:20] |
 | Slli | I-type | 0010011 - 001 | ins[24:20] |
