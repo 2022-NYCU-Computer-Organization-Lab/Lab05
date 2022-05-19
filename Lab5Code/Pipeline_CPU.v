@@ -84,11 +84,12 @@ wire [31:0] MEMWB_ALUresult_o;
 wire [4:0]  MEMWB_Instr_11_7_o;
 wire [31:0] MEMWB_PC_Add4_o;
 
+assign MUXPCSrc = (Branch & Branch_zero) | Jump;
 
 // IF
 MUX_2to1 MUX_PCSrc(
     .data0_i(PC_Add4),
-    .data1_i(),
+    .data1_i(PC_Add_Immediate),
     .select_i(MUXPCSrc),
     .data_o(pc_i)
 );
