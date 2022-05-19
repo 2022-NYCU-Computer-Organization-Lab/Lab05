@@ -94,6 +94,7 @@ MUX_2to1 MUX_PCSrc(
     .data_o(pc_i)
 );
 
+// PC_write
 ProgramCounter PC(
     .clk_i(clk_i),
     .rst_i(rst_i),
@@ -113,6 +114,8 @@ Instr_Memory IM(
 );
 
 IFID_register IFtoID(
+    .clk_i(clk_i),
+    .rst_i(rst_i),
 );
 
 // ID
@@ -126,15 +129,31 @@ Decoder Decoder(
 );
 
 Reg_File RF(
+    .clk_i(clk_i),
+    .rst_i(rst_i),
+    .RSaddr_i(IFID_Instr_o[19:15]),
+    .RTaddr_i(IFID_Instr_o[24:20]),
+    .RDaddr_i(MEMWB_Instr_11_7_o),
+    .RDdata_i(MUXMemtoReg_o),
+    .RegWrite_i(),
+    .RSdata_o(RSdata_o),
+    .RTdata_o(RTdata_o)
 );
 
 Imm_Gen ImmGen(
+    .instr_i(IFID_Instr_o),
+    Imm_Gen_o(Imm_Gen_o)
 );
 
 Shift_Left_1 SL1(
+    .data_i(Imm_Gen_o),
+    .data_o(SL1_o)
 );
 
 Adder Branch_Adder(
+    .src1_i(IFID_PC_o),
+    .src2_i(Imm_Gen_o),
+    .sum_o(PC_Add_Immediate)
 );
 
 IDEXE_register IDtoEXE(
@@ -148,15 +167,31 @@ ForwardingUnit FWUnit(
 );
 
 MUX_3to1 MUX_ALU_src1(
+    .data0_i(),
+    .data1_i(),
+    .data2_i(),
+    .select_i(ForwardA),
+    .data_o()
 );
 
 MUX_3to1 MUX_ALU_src2(
+    .data0_i(),
+    .data1_i(),
+    .data2_i(),
+    .select_i(ForwardB),
+    .data_o()
 );
 
 ALU_Ctrl ALU_Ctrl(
 );
 
 alu alu(
+    .rst_n(rst_i),
+    .src1(),
+    .src2(),
+    .ALU_control(),
+    .result(),
+    .zero()
 );
 
 EXEMEM_register EXEtoMEM(
@@ -171,6 +206,11 @@ MEMWB_register MEMtoWB(
 
 // WB
 MUX_3to1 MUX_MemtoReg(
+    .data0_i(MEMWB_ALUresult_o),
+    .data1_i(MEMWB_DM_o),
+    .data2_i(MEMWB_PC_Add4_o),
+    .select_i(),
+    .data_o(MUXMemtoReg_o)
 );
 
 endmodule
