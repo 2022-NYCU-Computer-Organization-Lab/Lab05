@@ -29,8 +29,10 @@ always @(*) begin
         4'b0101:    // slli
             result = src1 <<< src2;
     endcase	
+
+    zero = zero_wire;
 end
 
-assign zero = ~(|result);
+assign zero_wire = ~(|result);
 
 endmodule
