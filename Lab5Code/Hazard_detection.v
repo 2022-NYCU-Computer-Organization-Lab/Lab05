@@ -10,22 +10,24 @@ module Hazard_detection(
 );
 /* Write your code HERE */
 
-if (IDEXE_memRead == 1'b1) begin
-    if ( IFID_regRs == IDEXE_regRd ) begin
-        PC_write    = 1'b0;
-        IFID_write  = 1'b0;
-        control_output_select = 1'b1;
-    end 
-    else if ( IFID_regRt == IDEXE_regRd ) begin
-        PC_write    = 1'b0;
-        IFID_write  = 1'b0;
-        control_output_select = 1'b1;
+always @(*) begin
+    if (IDEXE_memRead == 1'b1) begin
+        if (IFID_regRs == IDEXE_regRd) begin
+            PC_write    = 1'b0;
+            IFID_write  = 1'b0;
+            control_output_select = 1'b1;
+        end 
+        else if (IFID_regRt == IDEXE_regRd) begin
+            PC_write    = 1'b0;
+            IFID_write  = 1'b0;
+            control_output_select = 1'b1;
+        end
     end
-end
-else begin
-    PC_write    = 1'b1;
-    IFID_write  = 1'b1;
-    control_output_select = 1'b0;
+    else begin
+        PC_write    = 1'b1;
+        IFID_write  = 1'b1;
+        control_output_select = 1'b0;
+    end
 end
 
 endmodule
