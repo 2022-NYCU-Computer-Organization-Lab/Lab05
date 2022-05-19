@@ -4,7 +4,7 @@ module EXEMEM_register (
     input rst_i,
     input [31:0] instr_i,
     input [2:0] WB_i,
-    input [2:0] Mem_i,
+    input [1:0] Mem_i, // TA gave us [2:0] but actually [1:0] (Memory read & memory write)
     input zero_i,
     input [31:0] alu_ans_i,
     input [31:0] rtdata_i,
@@ -13,7 +13,7 @@ module EXEMEM_register (
 
     output reg [31:0] instr_o,
     output reg [2:0] WB_o,
-    output reg [2:0] Mem_o,
+    output reg [1:0] Mem_o, // TA gave us [2:0] but actually [1:0] (Memory read & memory write)
     output reg zero_o,
     output reg [31:0] alu_ans_o,
     output reg [31:0] rtdata_o,
