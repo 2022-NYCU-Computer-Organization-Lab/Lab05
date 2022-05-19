@@ -10,7 +10,9 @@ input         rst_i;
 
 // Again, these are the signals TAs forgot to gave us
 wire [32-1:0] Imm_4 = 4;
+wire [32-1:0] Imm_0 = 0;
 wire [32-1:0] instr;
+wire hazard_control_output_select;
 
 //Internal Signals
 wire [31:0] PC_i;
@@ -120,9 +122,20 @@ IFID_register IFtoID(
 
 // ID
 Hazard_detection Hazard_detection_obj(
+    .IFID_regRs(IFID_Instr_o[19:15]),
+    .IFID_regRt(IFID_Instr_o[24:20]),
+    .IDEXE_regRd(),
+    .IDEXE_memRead(),
+    .PC_write(PC_write),
+    .IFID_write(IFID_Write),
+    .control_output_select(hazard_control_output_select)
 );
 
 MUX_2to1 MUX_control(
+    .data0_i(), // This should be Decoder's stuff
+    .data1_i(Imm_0),
+    .select_i(hazard_control_output_select),
+    .data()
 );
 
 Decoder Decoder(
@@ -157,6 +170,18 @@ Adder Branch_Adder(
 );
 
 IDEXE_register IDtoEXE(
+    .clk_i(clk_i),
+    .rst_i(rst_i),
+    .instr_i(IFID_Instr_o),
+    .WB_i(),
+    .Mem_i(),
+    .Exe_i(),
+    .data1_i(RSdata_o),
+    .data2_i(RTdata_o),
+    .immgen_i(Imm_Gen_o),
+    .alu_ctrl_instr(),
+    .WBreg_i(),
+    .pc_add4_i()
 );
 
 // EXE
@@ -199,6 +224,12 @@ EXEMEM_register EXEtoMEM(
 
 // MEM
 Data_Memory Data_Memory(
+    .clk_i(clk_i),
+    .addr_i(EXEMEM_ALUResult_o),
+    .data_i(EXEMEM_RTdata_o),
+    .MemRead_i(),
+    .MemWrite_i(),
+    .data_o(DM_o)
 );
 
 MEMWB_register MEMtoWB(
