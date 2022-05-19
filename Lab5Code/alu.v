@@ -31,6 +31,6 @@ always @(*) begin
     endcase	
 end
 
-assign Zero = ~(|result);
+assign zero = ~(|result);
 
 endmodule
