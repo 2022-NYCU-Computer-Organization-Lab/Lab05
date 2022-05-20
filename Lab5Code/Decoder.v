@@ -48,7 +48,7 @@ always @(*) begin
                     (opcode == 7'b0010011) ? 2'b00 :
                     (opcode == 7'b0000011) ? 2'b01 :
                     (opcode == 7'b1101111) ? 2'b10 :
-                    2'b00
+                    2'b00;
 end
 
 always @(*) begin
