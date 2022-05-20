@@ -175,6 +175,12 @@ Reg_File RF(
     .RTdata_o(RTdata_o)
 );
 
+Equal equal(
+    .src1(RSdata_o),
+    .src2(RTdata_o),
+    .zero(Branch_zero)
+);
+
 Imm_Gen ImmGen(
     .instr_i(IFID_Instr_o),
     .Imm_Gen_o(Imm_Gen_o)
