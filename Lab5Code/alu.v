@@ -23,9 +23,9 @@ always @(*) begin
         4'b0011:    // xor
             result = src1 ^ src2;
         4'b0111:    // slt
-            result = (src1 < src2)? {{31{1'b0}}, 1'b1} : {32'b0};
+            result = (src1 < src2)? {{31{1'b0}}, 1'b1} : {32{1'b0}};
         4'b0100:    // slti
-            result = (src1 < src2)? {{31{1'b0}}, 1'b1} : {32'b0};
+            result = (src1 < src2)? {{31{1'b0}}, 1'b1} : {32{1'b0}};
         4'b0101:    // slli
             result = src1 <<< src2;
     endcase	
