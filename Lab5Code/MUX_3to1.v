@@ -15,7 +15,7 @@ always @ (*) begin
     else if (select_i == 2'b01) begin
         data_o <= data1_i;
     end
-    else begin
+    else if (select_i == 2'b10) begin
         data_o <= data2_i;
     end
 end
